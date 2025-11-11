@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.title }}</title>
+    <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-semibold text-gray-700">
+                    <a href="/" class="text-gray-800 hover:text-blue-500">{{ site.title }}</a>
+                </div>
+                <div class="flex">
+                    <a href="{{ site.baseurl }}/how-to-start.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">如何开始</a>
+                    <a href="{{ site.baseurl }}/faq.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">FAQ</a>
+                    <a href="{{ site.baseurl }}/contributing.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">贡献指南</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container w-full md:max-w-3xl mx-auto pt-10 pb-20 px-6">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-4">{{ page.title }}</h1>
+            <div class="prose lg:prose-xl">
+                {{ content }}
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white mt-10">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+            <p>&copy; 2024 {{ site.title }}. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+---
+layout: default
+title: 欢迎来到我的网站
+---
+
+<div class="text-center">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ site.title }}</h1>
+    <p class="text-xl text-gray-600 mb-8">{{ site.description }}</p>
+    <div class="flex justify-center space-x-4">
+        <a href="{{ site.baseurl }}/how-to-start.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            如何开始
+        </a>
+        <a href="{{ site.baseurl }}/faq.html" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            常见问题
+        </a>
+        <a href="{{ site.baseurl }}/contributing.html" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+            贡献指南
+        </a>
+    </div>
+</div>
