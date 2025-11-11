@@ -1,2 +1,4 @@
 title: My Awesome GitHub Pages Site
 description: A clean, modern, and responsive site built with Jekyll.
+baseurl: "" # For local development. For GitHub Pages, set this to your repository name, e.g., "/my-repo"
+permalink: /:title.html

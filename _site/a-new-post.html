@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一篇新文章</title>
+    <meta name="description" content="欢迎阅读这篇新文章！">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-semibold text-gray-700">
+                    <a href="/" class="text-gray-800 hover:text-blue-500">My Awesome GitHub Pages Site</a>
+                </div>
+                <div class="flex">
+                    <a href="/how-to-start.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">如何开始</a>
+                    <a href="/faq.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">FAQ</a>
+                    <a href="/contributing.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">贡献指南</a>
+                    <a href="/a-new-post.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">一篇新文章</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container w-full md:max-w-3xl mx-auto pt-10 pb-20 px-6">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-4">一篇新文章</h1>
+            <div class="prose lg:prose-xl">
+                <h2 id="欢迎阅读这篇新文章">欢迎阅读这篇新文章！</h2>
+
+<p>正如您所见，添加新内容非常简单。您只需要在 <code class="language-plaintext highlighter-rouge">_posts</code> 目录中创建一个新的 Markdown 文件。</p>
+
+<h3 id="步骤回顾">步骤回顾</h3>
+
+<ol>
+  <li>在 <code class="language-plaintext highlighter-rouge">_posts</code> 目录中创建一个新文件。</li>
+  <li>文件名遵循 <code class="language-plaintext highlighter-rouge">YYYY-MM-DD-title.md</code> 格式。</li>
+  <li>在文件顶部添加 <code class="language-plaintext highlighter-rouge">front matter</code>，至少包括 <code class="language-plaintext highlighter-rouge">layout</code> 和 <code class="language-plaintext highlighter-rouge">title</code>。</li>
+</ol>
+
+<p>就是这样！Jekyll 会自动处理剩下的事情。</p>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white mt-10">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+            <p>&copy; 2024 My Awesome GitHub Pages Site. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
