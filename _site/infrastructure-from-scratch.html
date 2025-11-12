@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>从零开始搭建软硬件基础设施</title>
+    <meta name="description" content="架构设计、硬件清单、网络规划、基础服务、监控与安全的落地路线">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root{--bg:#f3f4f6;--card:#ffffff;--text:#1f2937;--muted:#6b7280;--link:#2563eb;--border:#e5e7eb}
+        html.dark{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--muted:#9ca3af;--link:#60a5fa;--border:#1f2937}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text)}
+        header,footer{background:var(--card)}
+        .card{background:var(--card)}
+        .nav-link{color:var(--muted);transition:color .2s ease}
+        .nav-link:hover{color:var(--link)}
+        .brand{color:var(--text);transition:color .2s ease}
+        .brand:hover{color:var(--link)}
+        .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);padding:.5rem .75rem;border-radius:.5rem;background:var(--card);color:var(--text);transition:transform .1s ease,background .2s ease}
+        .btn:active{transform:scale(.98)}
+        .prose h1,.prose h2,.prose h3{color:var(--text)}
+        .prose p{color:var(--muted)}
+        pre{position:relative;background:var(--card);border:1px solid var(--border);border-radius:.5rem;padding:1rem}
+        .copy-btn{position:absolute;top:.5rem;right:.5rem;font-size:.875rem}
+        #backToTop{position:fixed;bottom:2rem;right:2rem;display:none}
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <header class="shadow-md">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-semibold">
+                    <a href="/" class="brand">Soul Of Me 博客</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="menuToggle" class="btn md:hidden" aria-label="打开菜单">菜单</button>
+                    <button id="themeToggle" class="btn" aria-label="切换主题">🌙</button>
+                </div>
+            </div>
+            <div id="navLinks" class="mt-3 hidden md:flex items-center">
+                <a href="/how-to-start.html" class="nav-link px-3 py-2">如何开始</a>
+                <a href="/faq.html" class="nav-link px-3 py-2">FAQ</a>
+                <a href="/contributing.html" class="nav-link px-3 py-2">贡献指南</a>
+                <a href="/a-new-post.html" class="nav-link px-3 py-2">一篇新文章</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container w-full md:max-w-3xl mx-auto pt-10 pb-20 px-6">
+        <div class="card p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-4">从零开始搭建软硬件基础设施</h1>
+            <div class="prose lg:prose-xl">
+                <h2 id="目标与范围">目标与范围</h2>
+
+<p>以中小团队为场景，搭建稳定、可扩展、可观测的软硬件基础设施，覆盖网络、身份、代码托管与交付、容器编排、监控日志、备份与安全。</p>
+
+<h2 id="总体架构">总体架构</h2>
+
+<p>核心分层：接入层（网关与防火墙）、网络层（交换与 VLAN）、服务层（身份、DNS/DHCP/NTP）、应用层（代码托管与 CI/CD、制品仓库、镜像与容器）、可观测层（监控日志告警）、数据层（备份与恢复）。</p>
+
+<h2 id="硬件清单建议">硬件清单建议</h2>
+
+<ul>
+  <li>网关/防火墙：具备千兆交换与策略路由，支持 VPN</li>
+  <li>管理交换机：L2/L3 管理型，支持 VLAN、链路聚合</li>
+  <li>服务器：2 台以上 x86，32G 内存，SSD/NVMe，冗余电源</li>
+  <li>存储：NAS，支持快照与远程备份（如 ZFS/Btrfs）</li>
+  <li>机柜与配电：UPS，合理布线与标识</li>
+</ul>
+
+<h2 id="网络规划">网络规划</h2>
+
+<ul>
+  <li>地址段：区分管理、服务器、办公、访客 VLAN</li>
+  <li>DNS/DHCP：统一管理与保留地址池</li>
+  <li>NTP：统一时间源，日志与证书依赖</li>
+  <li>访问控制：最小权限原则，明确南北向与东西向流量策略</li>
+</ul>
+
+<h2 id="基础服务">基础服务</h2>
+
+<ul>
+  <li>身份认证：AD/LDAP，集中账号与权限，接入 GitLab/Jenkins/Registry</li>
+  <li>名称解析与服务发现：DNS，内部域与记录规范</li>
+  <li>时间服务：NTP，高可用与上游冗余</li>
+</ul>
+
+<h2 id="代码托管与-cicd">代码托管与 CI/CD</h2>
+
+<ul>
+  <li>GitLab：项目管理、Issue、Merge Request 与权限模型</li>
+  <li>Runner：Docker 执行环境，隔离构建与部署</li>
+  <li>制品仓库：Registry/Nexus，固化构建产物与依赖</li>
+  <li>流水线：分层构建、测试、发布与部署，区分环境并设立门禁</li>
+</ul>
+
+<h2 id="容器与编排">容器与编排</h2>
+
+<ul>
+  <li>本地与准生产：Docker Compose，快速迭代与一致性</li>
+  <li>小规模编排：Kubernetes 或 K3s，带来服务发现、滚动更新与 HPA</li>
+  <li>入口网关：Traefik/Caddy/Ingress，证书自动化与按域路由</li>
+</ul>
+
+<h2 id="监控与日志">监控与日志</h2>
+
+<ul>
+  <li>指标：Prometheus + Grafana，节点与应用指标采集与可视化</li>
+  <li>日志：Loki/ELK，集中式日志与检索</li>
+  <li>告警：Alertmanager，与 IM 或邮件集成</li>
+</ul>
+
+<p>示例 Docker Compose：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">prometheus</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">prom/prometheus</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./prometheus.yml:/etc/prometheus/prometheus.yml</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">9090:9090"</span>
+  <span class="na">grafana</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">grafana/grafana</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3000:3000"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="na">prometheus</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_started</span>
+</code></pre></div></div>
+
+<h2 id="备份与容灾">备份与容灾</h2>
+
+<ul>
+  <li>策略：3-2-1 原则，多副本、多介质、异地备份</li>
+  <li>级别：数据库、对象存储、文件系统与配置</li>
+  <li>恢复演练：定期校验与演练，缩短 RTO 与 RPO</li>
+</ul>
+
+<h2 id="安全与零信任">安全与零信任</h2>
+
+<ul>
+  <li>身份为中心：SSO、多因素认证与细粒度授权</li>
+  <li>网络分段：VLAN 与安全域边界，微分段控制东西向流量</li>
+  <li>证书与密钥：集中管理与自动续期，密钥最小暴露面</li>
+  <li>审计：登录、变更、发布与访问的审计闭环</li>
+</ul>
+
+<h2 id="落地步骤与时间表">落地步骤与时间表</h2>
+
+<ol>
+  <li>第 1 周：网络与基础服务上线（DNS/DHCP/NTP/LDAP）</li>
+  <li>第 2 周：GitLab 与 Runner，制品仓库与镜像仓库</li>
+  <li>第 3 周：监控与日志栈，统一告警通道与看板</li>
+  <li>第 4 周：应用容器化与编排，分环境发布与灰度</li>
+  <li>第 5 周：备份与容灾策略落地，演练与文档化</li>
+</ol>
+
+<h2 id="成本估算与规模扩展">成本估算与规模扩展</h2>
+
+<p>硬件一次性投入与持续电力/机房成本；软件可选社区或企业版。随团队规模与应用复杂度，逐步引入编排与服务网格等能力。</p>
+
+<h2 id="结语">结语</h2>
+
+<p>从零到一的基础设施建设核心在于标准化与可观测性，先打好网络与基础服务，再逐步引入 CI/CD 与容器化，最终以监控、日志与安全闭环保障稳定运营。</p>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-10">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+            <p>&copy; 2024 Soul Of Me 博客. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="btn">返回顶部</button>
+
+    <script>
+        ;(function(){
+            var stored=localStorage.getItem('theme');
+            var prefers=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+            var initial=stored||prefers;
+            if(initial==='dark')document.documentElement.classList.add('dark');
+            var themeBtn=document.getElementById('themeToggle');
+            if(themeBtn){
+                themeBtn.textContent=document.documentElement.classList.contains('dark')?'☀️':'🌙';
+                themeBtn.addEventListener('click',function(){
+                    document.documentElement.classList.toggle('dark');
+                    var isDark=document.documentElement.classList.contains('dark');
+                    localStorage.setItem('theme',isDark?'dark':'light');
+                    themeBtn.textContent=isDark?'☀️':'🌙';
+                });
+            }
+            var menuBtn=document.getElementById('menuToggle');
+            var navLinks=document.getElementById('navLinks');
+            if(menuBtn&&navLinks){
+                menuBtn.addEventListener('click',function(){
+                    if(navLinks.classList.contains('hidden')){navLinks.classList.remove('hidden')}else{navLinks.classList.add('hidden')}
+                });
+            }
+            var back=document.getElementById('backToTop');
+            if(back){
+                window.addEventListener('scroll',function(){
+                    if(window.scrollY>300){back.style.display='block'}else{back.style.display='none'}
+                });
+                back.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+            }
+            var codes=document.querySelectorAll('pre > code');
+            codes.forEach(function(code){
+                var btn=document.createElement('button');
+                btn.className='btn copy-btn';
+                btn.textContent='复制';
+                btn.addEventListener('click',function(){
+                    var text=code.innerText;
+                    navigator.clipboard.writeText(text).then(function(){btn.textContent='已复制';setTimeout(function(){btn.textContent='复制'},1500)});
+                });
+                code.parentElement.appendChild(btn);
+            });
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Compose使用</title>
+    <meta name="description" content="从入门到多环境编排的完整实践指南">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root{--bg:#f3f4f6;--card:#ffffff;--text:#1f2937;--muted:#6b7280;--link:#2563eb;--border:#e5e7eb}
+        html.dark{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--muted:#9ca3af;--link:#60a5fa;--border:#1f2937}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text)}
+        header,footer{background:var(--card)}
+        .card{background:var(--card)}
+        .nav-link{color:var(--muted);transition:color .2s ease}
+        .nav-link:hover{color:var(--link)}
+        .brand{color:var(--text);transition:color .2s ease}
+        .brand:hover{color:var(--link)}
+        .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);padding:.5rem .75rem;border-radius:.5rem;background:var(--card);color:var(--text);transition:transform .1s ease,background .2s ease}
+        .btn:active{transform:scale(.98)}
+        .prose h1,.prose h2,.prose h3{color:var(--text)}
+        .prose p{color:var(--muted)}
+        pre{position:relative;background:var(--card);border:1px solid var(--border);border-radius:.5rem;padding:1rem}
+        .copy-btn{position:absolute;top:.5rem;right:.5rem;font-size:.875rem}
+        #backToTop{position:fixed;bottom:2rem;right:2rem;display:none}
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <header class="shadow-md">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-xl font-semibold">
+                    <a href="/" class="brand">Soul Of Me 博客</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="menuToggle" class="btn md:hidden" aria-label="打开菜单">菜单</button>
+                    <button id="themeToggle" class="btn" aria-label="切换主题">🌙</button>
+                </div>
+            </div>
+            <div id="navLinks" class="mt-3 hidden md:flex items-center">
+                <a href="/how-to-start.html" class="nav-link px-3 py-2">如何开始</a>
+                <a href="/faq.html" class="nav-link px-3 py-2">FAQ</a>
+                <a href="/contributing.html" class="nav-link px-3 py-2">贡献指南</a>
+                <a href="/a-new-post.html" class="nav-link px-3 py-2">一篇新文章</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container w-full md:max-w-3xl mx-auto pt-10 pb-20 px-6">
+        <div class="card p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-4">Docker Compose使用</h1>
+            <div class="prose lg:prose-xl">
+                <h2 id="概述">概述</h2>
+
+<p>Docker Compose 用于定义和运行多容器应用。通过一个 <code class="language-plaintext highlighter-rouge">compose.yml</code> 文件即可描述服务、网络、卷与依赖关系，便于本地开发与多环境一致化部署。</p>
+
+<h2 id="安装与快速开始">安装与快速开始</h2>
+
+<h3 id="安装">安装</h3>
+
+<p>macOS 与 Windows 的 Docker Desktop 默认内置 Compose；Linux 可通过包管理器安装 <code class="language-plaintext highlighter-rouge">docker compose</code> 子命令。</p>
+
+<h3 id="最小示例">最小示例</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.25</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:80"</span>
+</code></pre></div></div>
+
+<p>运行与查看状态：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose up <span class="nt">-d</span>
+docker compose ps
+docker compose logs <span class="nt">-f</span> web
+</code></pre></div></div>
+
+<h2 id="composeyml-结构与关键字段"><code class="language-plaintext highlighter-rouge">compose.yml</code> 结构与关键字段</h2>
+
+<p>常用字段：<code class="language-plaintext highlighter-rouge">image</code>、<code class="language-plaintext highlighter-rouge">build</code>、<code class="language-plaintext highlighter-rouge">ports</code>、<code class="language-plaintext highlighter-rouge">environment</code>、<code class="language-plaintext highlighter-rouge">volumes</code>、<code class="language-plaintext highlighter-rouge">depends_on</code>、<code class="language-plaintext highlighter-rouge">networks</code>、<code class="language-plaintext highlighter-rouge">healthcheck</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">api</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">./api</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">NODE_ENV=development</span>
+      <span class="pi">-</span> <span class="s">DB_URL=${DB_URL}</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3000:3000"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./api:/app</span>
+      <span class="pi">-</span> <span class="s">node_modules:/app/node_modules</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="na">db</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_healthy</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD=secret</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD-SHELL"</span><span class="pi">,</span><span class="s2">"</span><span class="s">pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">postgres"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">3s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">5</span>
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">node_modules</span><span class="pi">:</span>
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">default</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">demo-net</span>
+</code></pre></div></div>
+
+<h2 id="多环境配置">多环境配置</h2>
+
+<p>使用 <code class="language-plaintext highlighter-rouge">.env</code> 与多个 Compose 文件叠加实现环境差异：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose <span class="nt">-f</span> compose.yml <span class="nt">-f</span> compose.prod.yml up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<p>示例：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># compose.prod.yml</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">api</span><span class="pi">:</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">NODE_ENV=production</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">limits</span><span class="pi">:</span>
+          <span class="na">cpus</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.0"</span>
+          <span class="na">memory</span><span class="pi">:</span> <span class="s">512M</span>
+</code></pre></div></div>
+
+<h2 id="卷与数据持久化">卷与数据持久化</h2>
+
+<ul>
+  <li>绑定卷：<code class="language-plaintext highlighter-rouge">./data:/var/lib/postgresql/data</code></li>
+  <li>匿名/命名卷：<code class="language-plaintext highlighter-rouge">dbdata:/var/lib/postgresql/data</code></li>
+</ul>
+
+<p>备份与恢复：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose <span class="nb">exec </span>db pg_dump <span class="nt">-U</span> postgres app <span class="o">&gt;</span> backup.sql
+docker compose <span class="nb">exec</span> <span class="nt">-T</span> db psql <span class="nt">-U</span> postgres app &lt; backup.sql
+</code></pre></div></div>
+
+<h2 id="网络与服务发现">网络与服务发现</h2>
+
+<p>Compose 默认创建隔离网络，服务间可用服务名互相访问：<code class="language-plaintext highlighter-rouge">api</code> 访问 <code class="language-plaintext highlighter-rouge">db:5432</code>。</p>
+
+<p>自定义网络可设置 <code class="language-plaintext highlighter-rouge">name</code> 以与其他栈共享。</p>
+
+<h2 id="健康检查与依赖">健康检查与依赖</h2>
+
+<p>通过 <code class="language-plaintext highlighter-rouge">healthcheck</code> 与 <code class="language-plaintext highlighter-rouge">depends_on</code> 的 <code class="language-plaintext highlighter-rouge">condition: service_healthy</code> 保证依赖顺序与稳定启动。</p>
+
+<h2 id="常用命令速查">常用命令速查</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose up <span class="nt">-d</span>
+docker compose down
+docker compose build <span class="nt">--no-cache</span>
+docker compose logs <span class="nt">-f</span> api
+docker compose <span class="nb">exec </span>api sh
+docker compose pull
+docker compose restart api
+</code></pre></div></div>
+
+<h2 id="生产环境建议">生产环境建议</h2>
+
+<ul>
+  <li>将敏感配置置于环境变量或密钥管理，不写入镜像</li>
+  <li>固化版本：<code class="language-plaintext highlighter-rouge">image: nginx:1.25.4</code>，避免 <code class="language-plaintext highlighter-rouge">latest</code></li>
+  <li>资源限制与健康检查必配</li>
+  <li>使用反向代理与证书自动续期（如 Traefik/Caddy）</li>
+</ul>
+
+<h2 id="故障排查">故障排查</h2>
+
+<p>日志、事件与容器状态结合定位：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker compose logs <span class="nt">--tail</span><span class="o">=</span>200 api
+docker events <span class="nt">--since</span> 1h
+docker ps <span class="nt">-a</span>
+</code></pre></div></div>
+
+<h2 id="完整示例">完整示例</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">caddy:2.8</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./site:/srv</span>
+      <span class="pi">-</span> <span class="s">./Caddyfile:/etc/caddy/Caddyfile</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">80:80"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">443:443"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="na">api</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_started</span>
+  <span class="na">api</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">./api</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">PORT=3000</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3000:3000"</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span><span class="s2">"</span><span class="s">curl"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-f"</span><span class="pi">,</span><span class="s2">"</span><span class="s">http://localhost:3000/health"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">3s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">5</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD=secret</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">dbdata:/var/lib/postgresql/data</span>
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">dbdata</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<p>以 Compose 为核心的本地与准生产编排可以保持环境一致性、提升交付效率，并为后续迁移至编排系统（如 Swarm/Kubernetes）打好基础。</p>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-10">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+            <p>&copy; 2024 Soul Of Me 博客. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="btn">返回顶部</button>
+
+    <script>
+        ;(function(){
+            var stored=localStorage.getItem('theme');
+            var prefers=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+            var initial=stored||prefers;
+            if(initial==='dark')document.documentElement.classList.add('dark');
+            var themeBtn=document.getElementById('themeToggle');
+            if(themeBtn){
+                themeBtn.textContent=document.documentElement.classList.contains('dark')?'☀️':'🌙';
+                themeBtn.addEventListener('click',function(){
+                    document.documentElement.classList.toggle('dark');
+                    var isDark=document.documentElement.classList.contains('dark');
+                    localStorage.setItem('theme',isDark?'dark':'light');
+                    themeBtn.textContent=isDark?'☀️':'🌙';
+                });
+            }
+            var menuBtn=document.getElementById('menuToggle');
+            var navLinks=document.getElementById('navLinks');
+            if(menuBtn&&navLinks){
+                menuBtn.addEventListener('click',function(){
+                    if(navLinks.classList.contains('hidden')){navLinks.classList.remove('hidden')}else{navLinks.classList.add('hidden')}
+                });
+            }
+            var back=document.getElementById('backToTop');
+            if(back){
+                window.addEventListener('scroll',function(){
+                    if(window.scrollY>300){back.style.display='block'}else{back.style.display='none'}
+                });
+                back.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+            }
+            var codes=document.querySelectorAll('pre > code');
+            codes.forEach(function(code){
+                var btn=document.createElement('button');
+                btn.className='btn copy-btn';
+                btn.textContent='复制';
+                btn.addEventListener('click',function(){
+                    var text=code.innerText;
+                    navigator.clipboard.writeText(text).then(function(){btn.textContent='已复制';setTimeout(function(){btn.textContent='复制'},1500)});
+                });
+                code.parentElement.appendChild(btn);
+            });
+        })();
+    </script>
+
+</body>
+</html>

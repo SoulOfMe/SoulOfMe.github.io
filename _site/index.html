@@ -4,55 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎来到我的网站</title>
-    <meta name="description" content="A clean, modern, and responsive site built with Jekyll.">
+    <meta name="description" content="记录工程实践与技术洞察，简洁现代的 Jekyll 博客。">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root{--bg:#f3f4f6;--card:#ffffff;--text:#1f2937;--muted:#6b7280;--link:#2563eb;--border:#e5e7eb}
+        html.dark{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--muted:#9ca3af;--link:#60a5fa;--border:#1f2937}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);color:var(--text)}
+        header,footer{background:var(--card)}
+        .card{background:var(--card)}
+        .nav-link{color:var(--muted);transition:color .2s ease}
+        .nav-link:hover{color:var(--link)}
+        .brand{color:var(--text);transition:color .2s ease}
+        .brand:hover{color:var(--link)}
+        .btn{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border);padding:.5rem .75rem;border-radius:.5rem;background:var(--card);color:var(--text);transition:transform .1s ease,background .2s ease}
+        .btn:active{transform:scale(.98)}
+        .prose h1,.prose h2,.prose h3{color:var(--text)}
+        .prose p{color:var(--muted)}
+        pre{position:relative;background:var(--card);border:1px solid var(--border);border-radius:.5rem;padding:1rem}
+        .copy-btn{position:absolute;top:.5rem;right:.5rem;font-size:.875rem}
+        #backToTop{position:fixed;bottom:2rem;right:2rem;display:none}
+    </style>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-    <header class="bg-white shadow-md">
+    <header class="shadow-md">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="text-xl font-semibold text-gray-700">
-                    <a href="/" class="text-gray-800 hover:text-blue-500">My Awesome GitHub Pages Site</a>
+                <div class="text-xl font-semibold">
+                    <a href="/" class="brand">Soul Of Me 博客</a>
                 </div>
-                <div class="flex">
-                    <a href="/how-to-start.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">如何开始</a>
-                    <a href="/faq.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">FAQ</a>
-                    <a href="/contributing.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">贡献指南</a>
-                    <a href="/a-new-post.html" class="text-gray-600 hover:text-blue-500 px-3 py-2">一篇新文章</a>
+                <div class="flex items-center gap-2">
+                    <button id="menuToggle" class="btn md:hidden" aria-label="打开菜单">菜单</button>
+                    <button id="themeToggle" class="btn" aria-label="切换主题">🌙</button>
                 </div>
+            </div>
+            <div id="navLinks" class="mt-3 hidden md:flex items-center">
+                <a href="/how-to-start.html" class="nav-link px-3 py-2">如何开始</a>
+                <a href="/faq.html" class="nav-link px-3 py-2">FAQ</a>
+                <a href="/contributing.html" class="nav-link px-3 py-2">贡献指南</a>
+                <a href="/a-new-post.html" class="nav-link px-3 py-2">一篇新文章</a>
             </div>
         </nav>
     </header>
 
     <main class="container w-full md:max-w-3xl mx-auto pt-10 pb-20 px-6">
-        <div class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="card p-8 rounded-lg shadow-lg">
             <h1 class="text-3xl font-bold mb-4">欢迎来到我的网站</h1>
             <div class="prose lg:prose-xl">
                 <div class="text-center">
-    <h1 class="text-4xl font-bold text-gray-800 mb-4">My Awesome GitHub Pages Site</h1>
-    <p class="text-xl text-gray-600 mb-8">A clean, modern, and responsive site built with Jekyll.</p>
+    <h1 class="text-4xl font-bold mb-4">Soul Of Me 博客</h1>
+    <p class="text-xl mb-8">记录工程实践与技术洞察，简洁现代的 Jekyll 博客。</p>
     <div class="flex justify-center space-x-4">
-        <a href="/how-to-start.html" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            如何开始
-        </a>
-        <a href="/faq.html" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            常见问题
-        </a>
-        <a href="/contributing.html" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
-            贡献指南
-        </a>
+        <a href="/how-to-start.html" class="btn">如何开始</a>
+        <a href="/faq.html" class="btn">常见问题</a>
+        <a href="/contributing.html" class="btn">贡献指南</a>
     </div>
 </div>
+
+<div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <a href="/docker-compose-usage.html" class="card p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-2">Docker Compose使用</h2>
+        <p class="text-gray-600">从入门到多环境编排的完整指南</p>
+    </a>
+    <a href="/gitlab-cicd.html" class="card p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-2">GitLab CICD</h2>
+        <p class="text-gray-600">Runner、Stages、Artifacts 与最佳实践</p>
+    </a>
+    <a href="/infrastructure-from-scratch.html" class="card p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold mb-2">从零开始搭建软硬件基础设施</h2>
+        <p class="text-gray-600">网络、服务、监控、安全与落地路线</p>
+    </a>
+    </div>
+
             </div>
         </div>
     </main>
 
-    <footer class="bg-white mt-10">
+    <footer class="mt-10">
         <div class="container mx-auto px-6 py-4 text-center text-gray-600">
-            <p>&copy; 2024 My Awesome GitHub Pages Site. All rights reserved.</p>
+            <p>&copy; 2024 Soul Of Me 博客. All rights reserved.</p>
         </div>
     </footer>
+
+    <button id="backToTop" class="btn">返回顶部</button>
+
+    <script>
+        ;(function(){
+            var stored=localStorage.getItem('theme');
+            var prefers=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+            var initial=stored||prefers;
+            if(initial==='dark')document.documentElement.classList.add('dark');
+            var themeBtn=document.getElementById('themeToggle');
+            if(themeBtn){
+                themeBtn.textContent=document.documentElement.classList.contains('dark')?'☀️':'🌙';
+                themeBtn.addEventListener('click',function(){
+                    document.documentElement.classList.toggle('dark');
+                    var isDark=document.documentElement.classList.contains('dark');
+                    localStorage.setItem('theme',isDark?'dark':'light');
+                    themeBtn.textContent=isDark?'☀️':'🌙';
+                });
+            }
+            var menuBtn=document.getElementById('menuToggle');
+            var navLinks=document.getElementById('navLinks');
+            if(menuBtn&&navLinks){
+                menuBtn.addEventListener('click',function(){
+                    if(navLinks.classList.contains('hidden')){navLinks.classList.remove('hidden')}else{navLinks.classList.add('hidden')}
+                });
+            }
+            var back=document.getElementById('backToTop');
+            if(back){
+                window.addEventListener('scroll',function(){
+                    if(window.scrollY>300){back.style.display='block'}else{back.style.display='none'}
+                });
+                back.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+            }
+            var codes=document.querySelectorAll('pre > code');
+            codes.forEach(function(code){
+                var btn=document.createElement('button');
+                btn.className='btn copy-btn';
+                btn.textContent='复制';
+                btn.addEventListener('click',function(){
+                    var text=code.innerText;
+                    navigator.clipboard.writeText(text).then(function(){btn.textContent='已复制';setTimeout(function(){btn.textContent='复制'},1500)});
+                });
+                code.parentElement.appendChild(btn);
+            });
+        })();
+    </script>
 
 </body>
 </html>

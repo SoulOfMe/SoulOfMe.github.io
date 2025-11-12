@@ -1,4 +1,4 @@
-title: My Awesome GitHub Pages Site
-description: A clean, modern, and responsive site built with Jekyll.
+title: Soul Of Me 博客
+description: 记录工程实践与技术洞察，简洁现代的 Jekyll 博客。
 baseurl: "" # For local development. For GitHub Pages, set this to your repository name, e.g., "/my-repo"
 permalink: /:title.html
